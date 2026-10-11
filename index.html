@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkVault | Smart Protected Shortener + Pastebin</title>
+<meta name="description" content="Free smart URL shortener and pastebin with phishing protection scan, password links, countdown interstitial and earnings dashboard.">
+<link rel="canonical" href="https://aoodiakdiro0001-ops.github.io/linkvault/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0d1117">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LinkVault | Shorten + Paste + Protection">
+<meta property="og:description" content="Smart links with safety scan, password and earnings. Free pastebin with expiry.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Consolas,monospace}
+:root{--bg:#0d1117;--panel:#141b30;--line:#2a3554;--grn:#3fb950;--blu:#58a6ff;--ylw:#d29922;--red:#f85149;--pur:#bc8cff;--txt:#e6edf3;--mut:#8b949e}
+body{background:var(--bg);color:var(--txt)}
+header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{font-size:22px;font-weight:900;color:var(--pur)}
+.logo small{display:block;font-size:11px;color:var(--mut);font-weight:400}
+header select{margin-left:auto;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:7px 10px;font-size:13px}
+.tabs{display:flex;gap:6px;padding:14px 16px 0;flex-wrap:wrap}
+.tabs button{background:var(--panel);color:var(--txt);border:1px solid var(--line);border-bottom:none;padding:10px 16px;border-radius:12px 12px 0 0;cursor:pointer;font-weight:800;font-size:13px}
+.tabs button.on{background:#1c2547;color:var(--pur)}
+main{max-width:1000px;margin:0 auto;padding:18px 15px 60px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:0 14px 14px 14px;padding:22px;display:none}
+.panel.on{display:block}
+.panel h2{color:var(--pur);margin-bottom:6px;font-size:19px}
+.panel p.sub{color:var(--mut);font-size:13px;margin-bottom:12px;line-height:1.7}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
+input[type=text],input[type=password],select,textarea{background:#0d1117;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:10px 13px;font-size:13.5px;outline:none}
+input[type=text],input[type=password]{min-width:160px}
+textarea{width:100%;min-height:150px;font-family:Consolas,monospace;font-size:12.5px;direction:ltr}
+button.go{background:var(--pur);color:#0d0716;border:none;padding:10px 22px;border-radius:10px;font-weight:900;cursor:pointer;font-size:14px}
+button.alt{background:transparent;color:var(--blu);border:1px solid var(--blu);padding:9px 16px;border-radius:10px;cursor:pointer;font-size:13px}
+button.go:hover{filter:brightness(1.12)}
+pre.out{background:#0d1117;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;overflow:auto;direction:ltr;text-align:left;white-space:pre-wrap}
+.note{background:#1c2547;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--mut);margin:10px 0;line-height:1.7}
+.res{background:#0d1117;border:1px solid var(--grn);border-radius:12px;padding:14px;margin:10px 0;font-size:14px}
+.res a{color:var(--grn);font-weight:800;word-break:break-all}
+table.bt{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+table.bt th,table.bt td{border-bottom:1px solid var(--line);padding:9px 7px;text-align:left;vertical-align:top}
+table.bt th{color:var(--pur)}
+table.bt td.mono{font-family:monospace;font-size:11.5px;word-break:break-all}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:12px 0}
+.stat{background:#0d1117;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.stat b{font-size:26px;color:var(--pur);display:block}
+.stat span{font-size:12px;color:var(--mut)}
+#gate{display:none;max-width:620px;margin:30px auto;padding:0 15px}
+.gatecard{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;text-align:center}
+.gatecard .url{font-size:13px;word-break:break-all;color:var(--blu);margin:8px 0;direction:ltr}
+.verdict{font-size:20px;font-weight:900;padding:10px;border-radius:12px;margin:10px 0}
+.v-safe{background:#0e2a1d;color:var(--grn)} .v-warn{background:#33270e;color:var(--ylw)} .v-bad{background:#3d1414;color:var(--red)}
+.flags{text-align:left;font-size:12.5px;line-height:2;margin:8px 0}
+.count{font-size:44px;font-weight:900;color:var(--pur)}
+.adslot{max-width:1000px;margin:12px auto 0;padding:0 15px;text-align:center}
+.adslot .ph{display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px}
+.pasteview{background:#0d1117;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:Consolas,monospace;font-size:13px;white-space:pre-wrap;direction:ltr;text-align:left;max-height:400px;overflow:auto}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:26px 16px;border-top:1px solid var(--line);line-height:2}
+footer a{color:var(--grn)}
+#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:12px 25px;border-radius:25px;z-index:200;display:none;font-size:14px;max-width:92vw;text-align:center}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">🔗 LinkVault<small data-i="tag"></small></div>
+<select id="langSel" onchange="setLang(this.value)">
+<option value="en" selected>🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>
+</select>
+</header>
+<div id="mainUI">
+<div class="tabs" id="tabs"></div>
+<main>
+<section class="panel on" id="p-short">
+<h2 data-i="sT"></h2><p class="sub" data-i="sS"></p>
+<div class="row"><input type="text" id="longUrl" data-i-ph="urlPh" style="flex:1;min-width:220px;direction:ltr"></div>
+<div class="row">
+<select id="provSel"><option value="auto">Auto (is.gd → v.gd → cleanuri)</option><option value="isgd">is.gd</option><option value="vgd">v.gd</option><option value="cleanuri">cleanuri.com</option><option value="vault">🔐 LinkVault native (ads + password)</option></select>
+<input type="password" id="linkPass" data-i-ph="passPh" style="max-width:170px">
+<select id="linkExp"><option value="0" data-i="expNever"></option><option value="7" data-i="exp7"></option><option value="30" data-i="exp30"></option></select>
+<button class="go" onclick="shorten()" data-i="btnShort"></button>
+</div>
+<div id="shortRes"></div>
+<div class="note" data-i="provNote"></div>
+</section>
+<section class="panel" id="p-paste">
+<h2 data-i="pT"></h2><p class="sub" data-i="pS"></p>
+<textarea id="pasteIn" data-i-ph="pastePh" rows="8"></textarea>
+<div class="row">
+<select id="pasteLang"><option>text</option><option>javascript</option><option>python</option><option>solidity</option><option>html</option><option>bash</option><option>json</option></select>
+<select id="pasteExp"><option value="0" data-i="expNever"></option><option value="600">10 min</option><option value="3600">1 h</option><option value="86400">1 day</option></select>
+<label style="font-size:13px"><input type="checkbox" id="pasteBurn"> <span data-i="burnL"></span></label>
+<button class="go" onclick="makePaste('local')" data-i="btnLocal"></button>
+<button class="alt" onclick="makePaste('global')" data-i="btnGlobal"></button>
+</div>
+<div id="pasteRes"></div>
+</section>
+<section class="panel" id="p-earn">
+<h2 data-i="eT"></h2><p class="sub" data-i="eS"></p>
+<div class="stat-grid">
+<div class="stat"><b id="stLinks">0</b><span data-i="stL"></span></div>
+<div class="stat"><b id="stClicks">0</b><span data-i="stC"></span></div>
+<div class="stat"><b id="stEarn">$0.00</b><span data-i="stE"></span></div>
+<div class="stat"><b id="stCpm">$1.50</b><span>CPM</span></div>
+</div>
+<div style="overflow-x:auto"><table class="bt"><thead><tr><th data-i="cLink"></th><th data-i="cDest"></th><th data-i="cClicks"></th><th data-i="cEarn"></th><th></th></tr></thead><tbody id="earnBody"></tbody></table></div>
+<div class="note" data-i="earnNote"></div>
+<section class="panel" id="p-pay">
+<h2 data-i="payT"></h2><p class="sub" data-i="payS"></p>
+<div id="payBox"></div>
+</section>
+</main>
+<div class="adslot" id="adFoot"><span class="ph" data-i="adHere" style="display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px"></span></div>
+</div>
+<div id="gate"><div class="gatecard" id="gateBody"></div>
+<div class="adslot" id="adGate" style="margin-top:12px"><span class="ph" data-i="adHere" style="display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px"></span></div>
+</div>
+<footer><span data-i="foot"></span><br>📧 <a href="mailto:baranavisat@gmail.com">baranavisat@gmail.com</a> · 📞 <a href="tel:+905313263722" dir="ltr">+90 531 326 37 22</a> · <a href="https://wa.me/905313263722" target="_blank" rel="noopener">WhatsApp</a><br><a href="README.md" target="_blank">README</a> · MIT</footer>
+<div id="toast"></div>
+<script>
+const CONFIG={ads:{client:'',slot:'',carbonServe:'',carbonPlacement:''},cpm:1.5,waitSec:5};
+const RISKY_TLD=['tk','ml','ga','cf','gq','top','xyz','buzz','click','link','zip','mov','lol','sbs','cyou','rest'];
+const KW=['login','verify','secure','update','account','bank','paypal','wallet','confirm','signin','password'];
+const T={
+en:{tag:'Shorten + pastebin with smart protection',tabS:'🔗 Shorten',tabP:'📋 Pastebin',tabE:'💰 Earnings',
+sT:'🔗 Smart Link Shortener',sS:'Global shorteners for worldwide links — or native LinkVault links with countdown ads, password and expiry.',
+urlPh:'https:// very-long-link...',passPh:'password (native only)',expNever:'never expires',exp7:'7 days',exp30:'30 days',btnShort:'Shorten',
+provNote:'Global providers redirect directly (their rules). Native links open here with safety scan + countdown ads + optional password.',
+pT:'📋 Pastebin',pS:'Local pastes live in this browser. Global publish uses paste.rs (worldwide link). Burn-after-reading supported.',
+pastePh:'paste code or text here...',burnL:'burn after reading',btnLocal:'Save locally',btnGlobal:'Publish globally 🌍',
+eT:'💰 Earnings Dashboard',eS:'Native-link clicks counted here with estimated earnings at configured CPM. Real ad revenue needs ad accounts + backend counting.',
+stL:'links created',stC:'vault clicks',stE:'est. earnings',cLink:'Short link',cDest:'Destination',cClicks:'Clicks',cEarn:'Est.',cDel:'❌',tabPay:'💳 Payments',payT:'💳 Payment Accounts',payS:'Support LinkVault or pay for featured placements. Tap copy.',copyB:'Copy',
+earnNote:'Estimate only: clicks × CPM ÷ 1000. Connect AdSense/Carbon IDs in CONFIG.ads for real revenue.',
+adHere:'Your dev-tool ad here',foot:'LinkVault — free shortener + pastebin. Links expire, data stays local unless published.',
+copied:'Copied ✅',badUrl:'Enter a valid http(s) URL ⚠️',apiFail:'Global APIs unreachable — native link created instead ✅',created:'Created ✅',
+vSafe:'✅ Looks safe',vWarn:'⚠️ Suspicious — check before proceeding',vBad:'🛑 Dangerous — do not proceed',
+fProto:'non-HTTPS',fPuny:'IDN homograph risk (xn--)',fIp:'IP address host',fAt:'@ trick in URL',fPort:'unusual port',fTld:'risky TLD',fSubs:'too many subdomains',fLong:'very long URL',fKw:'phishing keywords',fRedir:'open-redirect pattern',fShort:'already-shortened (nested)',
+waitL:'redirecting in',goNow:'Open now →',goBack:'← Go back',needPass:'Enter link password',wrongPass:'Wrong password ⚠️',expired:'Link expired ⚠️',notFound:'Link not found ⚠️',
+pasteGone:'Paste expired or burned 🔥',pasteBy:'expires',copyBtn:'Copy text',
+needText:'Paste some text first ⚠️',pubFail:'Publish failed — saved locally instead ⚠️',pubOk:'Published worldwide ✅'},
+tr:{tag:'Akıllı korumalı kısaltma + pastebin',tabS:'🔗 Kısalt',tabP:'📋 Pastebin',tabE:'💰 Kazanç',
+sT:'🔗 Akıllı Link Kısaltıcı',sS:'Global kısaltıcılar dünya çapı linkler için — veya reklamlı, şifreli, süreli yerli LinkVault linkleri.',
+urlPh:'https:// çok-uzun-link...',passPh:'parola (yerli only)',expNever:'süresiz',exp7:'7 gün',exp30:'30 gün',btnShort:'Kısalt',
+provNote:'Global sağlayıcılar doğrudan yönlendirir. Yerli linkler burada güvenlik taraması + geri sayım reklamı + opsiyonel parola ile açılır.',
+pT:'📋 Pastebin',pS:'Yerli yapıştırmalar bu tarayıcıda. Global yayın paste.rs ile (dünya çapı link). Okuyunca-yakma desteklenir.',
+pastePh:'kodu/meti buraya yapıştır...',burnL:'okuyunca yak',btnLocal:'Yerelde kaydet',btnGlobal:'Global yayınla 🌍',
+eT:'💰 Kazanç Panosu',eS:'Yerli link tıklamaları burada sayılır, CPM ile tahmini kazanç. Gerçek gelir için reklam hesabı + backend gerekir.',
+stL:'oluşturulan link',stC:'tıklama',stE:'tahmini kazanç',cLink:'Kısa link',cDest:'Hedef',cClicks:'Tık',cEarn:'Tahmini',cDel:'❌',tabPay:'💳 Ödemeler',payT:'💳 Ödeme Hesapları',payS:'LinkVault\u2019u destekleyin veya öne çıkan yerleşim için ödeyin. Kopyalamak için dokunun.',copyB:'Kopyala',
+earnNote:'Tahminidir: tık × CPM ÷ 1000. Gerçek gelir için CONFIG.ads\u2019a ID girin.',
+adHere:'Reklamınız burada',foot:'LinkVault — ücretsiz kısaltıcı + pastebin. Süreli linkler, veri yerelde.',
+copied:'Kopyalandı ✅',badUrl:'Geçerli http(s) URL girin ⚠️',apiFail:'Global API\u2019lere ulaşılamadı — yerli link kuruldu ✅',created:'Oluşturuldu ✅',
+vSafe:'✅ Güvenli görünüyor',vWarn:'⚠️ Şüpheli — dikkatle ilerleyin',vBad:'🛑 Tehlikeli — ilerlemeyin',
+fProto:'HTTPS değil',fPuny:'IDN benzerlik riski (xn--)',fIp:'IP adresi host',fAt:'URL\u2019de @ hilesi',fPort:'sıra dışı port',fTld:'riskli TLD',fSubs:'çok alt alan adı',fLong:'çok uzun URL',fKw:'oltalama kelimeleri',fRedir:'açık yönlendirme deseni',fShort:'zaten kısaltılmış (iç içe)',
+waitL:'yönlendiriliyor:',goNow:'Hemen aç →',goBack:'← Geri dön',needPass:'Link parolasını girin',wrongPass:'Yanlış parola ⚠️',expired:'Süre dolmuş ⚠️',notFound:'Bulunamadı ⚠️',
+pasteGone:'Süre dolmuş/yanmış 🔥',pasteBy:'bitiş',copyBtn:'Metni kopyala',
+needText:'Önce metin yapıştırın ⚠️',pubFail:'Yayın başarısız — yerelde saklandı ⚠️',pubOk:'Dünya çapında yayınlandı ✅'},
+ar:{tag:'تقصير ذكي + pastebin مع حماية',tabS:'🔗 اختصر',tabP:'📋 لصق',tabE:'💰 الأرباح',
+sT:'🔗 مختصر روابط ذكي',sS:'مختصرات عالمية للروابط الدولية — أو روابط LinkVault محلية بإعلانات وكلمة سر وانتهاء.',
+urlPh:'https:// رابط-طويل...',passPh:'كلمة السر (محلي فقط)',expNever:'بلا انتهاء',exp7:'7 أيام',exp30:'30 يوماً',btnShort:'اختصر',
+provNote:'المزودون العالميون يحوّلون مباشرة. الروابط المحلية تُفتح هنا مع فحص أمان وإعلانات وكلمة سر اختيارية.',
+pT:'📋 لصق النصوص',pS:'اللصقات المحلية في هذا المتصفح. النشر العالمي عبر paste.rs. يدعم الحرق بعد القراءة.',
+pastePh:'الصق الكود أو النص هنا...',burnL:'احرق بعد القراءة',btnLocal:'احفظ محلياً',btnGlobal:'انشر عالمياً 🌍',
+eT:'💰 لوحة الأرباح',eS:'نقرات الروابط المحلية تُحسب هنا مع أرباح تقديرية. الإيراد الحقيقي يحتاج حسابات إعلانية.',
+stL:'روابط',stC:'نقرات',stE:'أرباح تقديرية',cLink:'الرابط',cDest:'الوجهة',cClicks:'نقرات',cEarn:'تقديري',cDel:'❌',tabPay:'💳 الدفع',payT:'💳 حسابات الدفع',payS:'ادعم LinkVault أو ادفع للمواضع المميزة. انقر للنسخ.',copyB:'نسخ',
+earnNote:'تقدير فقط: النقرات × CPM ÷ 1000. للإيراد الحقيقي أدخل IDs في CONFIG.ads.',
+adHere:'مساحتك الإعلانية هنا',foot:'LinkVault — مختصر ولصق مجاني. روابط مؤقتة وبيانات محلية.',
+copied:'تم ✅',badUrl:'أدخل رابط http(s) صالحاً ⚠️',apiFail:'تعذر الوصول العالمي — أُنشئ رابط محلي ✅',created:'أُنشئ ✅',
+vSafe:'✅ يبدو آمناً',vWarn:'⚠️ مريب — تحقق قبل المتابعة',vBad:'🛑 خطير — لا تتابع',
+fProto:'ليس HTTPS',fPuny:'خطر تشابه IDN',fIp:'مضيف IP',fAt:'خدعة @',fPort:'منفذ غريب',fTld:'نطاق خطير',fSubs:'نطاقات فرعية كثيرة',fLong:'رابط طويل جداً',fKw:'كلمات تصيد',fRedir:'نمط تحويل مفتوح',fShort:'مختصر مسبقاً',
+waitL:'التوجيه خلال:',goNow:'افتح الآن →',goBack:'← رجوع',needPass:'أدخل كلمة السر',wrongPass:'خطأ ⚠️',expired:'انتهى ⚠️',notFound:'غير موجود ⚠️',
+pasteGone:'انتهى/احترق 🔥',pasteBy:'ينتهي',copyBtn:'نسخ النص',
+needText:'الصق نصاً أولاً ⚠️',pubFail:'فشل النشر — حُفظ محلياً ⚠️',pubOk:'نُشر عالمياً ✅'}};
+let lang='en';
+const t=k=>(T[lang]&&T[lang][k])||T.en[k]||k;
+function setLang(v){lang=v;document.documentElement.lang=v;document.documentElement.dir=(v==='ar')?'rtl':'ltr';document.getElementById('langSel').value=v;
+document.querySelectorAll('[data-i]').forEach(e=>{e.textContent=t(e.dataset.i);});
+document.querySelectorAll('[data-i-ph]').forEach(e=>{e.placeholder=t(e.dataset.iPh);});
+buildTabs();renderEarn();renderPay();}
+function tab(w){['short','paste','earn','pay'].forEach(k=>{const b=document.getElementById('tab-'+k);if(b)b.classList.toggle('on',w===k);document.getElementById('p-'+k).classList.toggle('on',w===k);});}
+const TABS=[['short','tabS'],['paste','tabP'],['earn','tabE'],['pay','tabPay']];
+const PAY={btc:'bc1q8dhtdrndxsl70e97t8grydfe6pjue37zrhzf6c',usdt:'TLWdTjqqogkXNEXGiPWsGdjFP6ioycxeWW',name:'Baran Avisat',try:'TR10 0001 0090 1008 4013 0050 01',usd:'TR80 0001 0090 1008 4013 0050 02'};
+function renderPay(){const el=document.getElementById('payBox');if(!el)return;
+const row=(l,v)=>`<div class="row"><b style="min-width:130px">${l}</b><code style="direction:ltr;flex:1;min-width:200px">${v}</code><button class="alt" onclick="copyTxt('${v.replace(/ /g,'')}')">${t('copyB')}</button></div>`;
+el.innerHTML=row('₿ BTC',PAY.btc)+row('₮ USDT-TRC20',PAY.usdt)+row('🏦 '+PAY.name+' TRY',PAY.try)+row('🏦 '+PAY.name+' USD',PAY.usd);}
+function buildTabs(){document.getElementById('tabs').innerHTML=TABS.map(x=>`<button id="tab-${x[0]}" onclick="tab('${x[0]}')">${t(x[1])}</button>`).join('');document.getElementById('tab-short').classList.add('on');}
+function toast(m){let d=document.getElementById('toast');d.textContent=m;d.style.display='block';clearTimeout(d._h);d._h=setTimeout(()=>d.style.display='none',2200);}
+function sGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function links(){return sGet('lv_links',{});} function setLinks(o){sSet('lv_links',o);}
+function pastes(){return sGet('lv_pastes',{});} function setPastes(o){sSet('lv_pastes',o);}
+function created(){return sGet('lv_created',[]);} function setCreated(a){sSet('lv_created',a);}
+function copyTxt(x){try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(x);}catch(e){}toast(t('copied')+' '+x.slice(0,60));}
+function rnd(n){const cs='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789',a=new Uint32Array(n);crypto.getRandomValues(a);let s='';for(let i=0;i<n;i++)s+=cs[a[i]%cs.length];return s;}
+function norm(u){u=(u||'').trim();if(u&&!/^[a-z][a-z0-9+.-]*:\/\//i.test(u))u='https://'+u;try{const x=new URL(u);if(x.protocol!=='http:'&&x.protocol!=='https:')return '';return x.href;}catch(e){return '';}}
+function base(){return location.origin+location.pathname;}
+function scanURL(u){
+const flags=[];let x;try{x=new URL(u);}catch(e){return {level:'bad',flags:['invalid']};}
+const host=(x.hostname||'').toLowerCase();
+if(x.protocol!=='https:')flags.push('fProto');
+if(host.includes('xn--'))flags.push('fPuny');
+if(/^\d+\.\d+\.\d+\.\d+$/.test(host)||/^\[.+\]$/.test(host))flags.push('fIp');
+if(x.username||u.split('#')[0].indexOf('@')>u.indexOf('://')+2)flags.push('fAt');
+if(x.port&&['80','443','8080','8443'].indexOf(x.port)<0)flags.push('fPort');
+const tld=host.split('.').pop();
+if(RISKY_TLD.indexOf(tld)>=0)flags.push('fTld');
+if(host.split('.').length>4)flags.push('fSubs');
+if(u.length>120)flags.push('fLong');
+const low=u.toLowerCase();
+if(KW.some(k=>low.includes(k)))flags.push('fKw');
+if(/[?&](url|redirect|next|dest|destination|goto|continue)=https?/i.test(u))flags.push('fRedir');
+if(/(bit\.ly|is\.gd|v\.gd|t\.co|tinyurl|goo\.gl|ow\.ly|cutt\.ly|shorturl)/i.test(host))flags.push('fShort');
+let level='safe';
+if(flags.includes('fPuny')||flags.includes('fIp')&&flags.includes('fKw')||flags.length>=4)level='bad';
+else if(flags.length>=1)level='warn';
+if(flags.includes('fIp')&&flags.length===1&&x.protocol==='https:')level='warn';
+return {level,flags,host};
+}
+async function apiShort(provider,url){
+if(provider==='isgd'||provider==='vgd'){const d=provider==='isgd'?'is.gd':'v.gd';
+const r=await fetch('https://'+d+'/create.php?format=json&url='+encodeURIComponent(url));if(!r.ok)throw 0;
+const j=await r.json();if(!j.shorturl)throw 0;return j.shorturl;}
+if(provider==='cleanuri'){const r=await fetch('https://cleanuri.com/api/v1/shorten',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'url='+encodeURIComponent(url)});if(!r.ok)throw 0;
+const j=await r.json();if(!j.result_url)throw 0;return j.result_url;}
+throw 0;
+}
+function mkNative(url){
+const code=rnd(6);const L=links();
+if(L[code])return mkNative(url);
+const exp=document.getElementById('linkExp').value;
+L[code]={url,pass:document.getElementById('linkPass').value||'',exp:exp==='0'?0:Date.now()+ +exp*864e5,created:Date.now(),clicks:0};
+setLinks(L);return base()+'#s='+code;
+}
+async function shorten(){
+const url=norm(document.getElementById('longUrl').value);
+if(!url){toast(t('badUrl'));return;}
+const prov=document.getElementById('provSel').value;
+const box=document.getElementById('shortRes');box.innerHTML='…';
+const rec={long:url,time:new Date().toLocaleString()};
+const done=(short,via)=>{rec.short=short;rec.via=via;const c=created();c.unshift(rec);setCreated(c.slice(0,200));renderEarn();
+box.innerHTML=`<div class="res">🔗 <a target="_blank" rel="noopener" href="${short}">${short}</a><br><small style="color:var(--mut)">${via}</small><div class="row"><button class="alt" onclick="copyTxt('${short}')">${t('copied')}</button></div></div>`;toast(t('created'));};
+if(prov==='vault'){done(mkNative(url),'LinkVault native');return;}
+const order=prov==='auto'?['isgd','vgd','cleanuri']:[prov];
+for(const p of order){try{const s=await apiShort(p,url);done(s,p);return;}catch(e){}}
+done(mkNative(url),'LinkVault native · '+t('apiFail'));
+}
+function route(){
+const h=location.hash||'';
+if(h.startsWith('#s='))gateLink(h.slice(3));
+else if(h.startsWith('#p='))gatePaste(h.slice(3));
+else {document.getElementById('mainUI').style.display='';document.getElementById('gate').style.display='none';}
+}
+let gateTimer=null,gateOK='';
+function gateLink(code){
+code=String(code||'');
+document.getElementById('mainUI').style.display='none';document.getElementById('gate').style.display='';
+const B=document.getElementById('gateBody');
+if(!/^[A-Za-z0-9]{1,16}$/.test(code)){B.innerHTML=`<div class="verdict v-bad">${t('notFound')}</div>`;return;}
+const L=links(),it=L[code];
+if(!it){B.innerHTML=`<div class="verdict v-bad">${t('notFound')}</div>`;return;}
+if(it.exp&&Date.now()>it.exp){delete L[code];setLinks(L);B.innerHTML=`<div class="verdict v-bad">${t('expired')}</div>`;return;}
+if(it.pass&&gateOK!==code){B.innerHTML=`<h3>🔐 LinkVault</h3><p>${t('needPass')}</p><div class="row" style="justify-content:center"><input type="password" id="gatePass"><button class="go" onclick="gateLink('${code}')">${t('goNow')}</button></div>`;return;}
+if(it.pass){const v=(document.getElementById('gatePass')||{}).value||'';if(v!==it.pass){B.innerHTML=`<h3>🔐 LinkVault</h3><p>${t('wrongPass')}</p><div class="row" style="justify-content:center"><button class="alt" onclick="location.hash='';route()">${t('goBack')}</button></div>`;return;}}
+gateOK=code;
+const sc=scanURL(it.url);
+const vc=sc.level==='safe'?'v-safe':sc.level==='warn'?'v-warn':'v-bad';
+const vt=sc.level==='safe'?t('vSafe'):sc.level==='warn'?t('vWarn'):t('vBad');
+B.innerHTML=`<h3>🔗 LinkVault</h3><div class="url">${it.url.slice(0,90)}</div><div class="verdict ${vc}">${vt}</div><div class="flags">${sc.flags.map(f=>`• ${t(f)}`).join('<br>')||'—'}</div><div class="count" id="cdN">${CONFIG.waitSec}</div><div>${t('waitL')}</div><div class="row" style="justify-content:center"><button class="alt" onclick="location.hash='';route()">${t('goBack')}</button></div>`;
+let n=CONFIG.waitSec;clearInterval(gateTimer);
+gateTimer=setInterval(()=>{n--;const el=document.getElementById('cdN');if(!el){clearInterval(gateTimer);return;}
+if(n<=0){clearInterval(gateTimer);it.clicks=(it.clicks||0)+1;const L2=links();if(L2[code]){L2[code].clicks=it.clicks;setLinks(L2);}location.href=it.url;}else el.textContent=n;},1000);
+}
+function gatePaste(id){
+id=String(id||'');
+document.getElementById('mainUI').style.display='none';document.getElementById('gate').style.display='';
+const B=document.getElementById('gateBody');
+if(!/^[A-Za-z0-9]{1,16}$/.test(id)){B.innerHTML=`<div class="verdict v-bad">${t('notFound')}</div>`;return;}
+const P=pastes(),it=P[id];
+if(!it||(it.exp&&Date.now()>it.exp)){if(it){delete P[id];setPastes(P);}B.innerHTML=`<div class="verdict v-bad">${t('pasteGone')}</div>`;return;}
+B.innerHTML=`<h3>📋 LinkVault paste</h3><div class="pasteview">${it.text.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div><div class="row" style="justify-content:center"><button class="alt" onclick="copyTxt(document.querySelector('.pasteview').textContent)">${t('copyBtn')}</button><button class="alt" onclick="location.hash='';route()">${t('goBack')}</button></div><small style="color:var(--mut)">${t('pasteBy')}: ${it.exp?new Date(it.exp).toLocaleString():'∞'}</small>`;
+if(it.burn){delete P[id];setPastes(P);}
+}
+function makePaste(mode){
+const txt=document.getElementById('pasteIn').value;
+if(!txt.trim()){toast(t('needText'));return;}
+if(mode==='global'){
+fetch('https://paste.rs',{method:'POST',headers:{'Content-Type':'text/plain'},body:txt}).then(r=>{if(!r.ok)throw 0;return r.text();}).then(u=>{
+u=u.trim();const c=created();c.unshift({long:'paste',short:u,via:'paste.rs',time:new Date().toLocaleString()});setCreated(c.slice(0,200));renderEarn();
+document.getElementById('pasteRes').innerHTML=`<div class="res">🌍 <a target="_blank" rel="noopener" href="${u}">${u}</a><div class="row"><button class="alt" onclick="copyTxt('${u}')">${t('copied')}</button></div></div>`;toast(t('pubOk'));}).catch(()=>{saveLocalPaste();toast(t('pubFail'));});
+return;}
+saveLocalPaste();
+}
+function saveLocalPaste(){
+const txt=document.getElementById('pasteIn').value;
+const id=rnd(8),exp=document.getElementById('pasteExp').value;
+const P=pastes();P[id]={text:txt.slice(0,20000),lang:document.getElementById('pasteLang').value,exp:exp==='0'?0:Date.now()+ +exp*1000,created:Date.now(),burn:document.getElementById('pasteBurn').checked};
+setPastes(P);const link=base()+'#p='+id;
+document.getElementById('pasteRes').innerHTML=`<div class="res">🔗 <a href="${link}">${link}</a><div class="row"><button class="alt" onclick="copyTxt('${link}')">${t('copied')}</button></div></div>`;toast(t('created'));
+}
+function earnOf(clicks){return clicks*CONFIG.cpm/1000;}
+function renderEarn(){
+const L=links();const codes=Object.keys(L);
+let clicks=0;codes.forEach(k=>clicks+=L[k].clicks||0);
+const c=created();
+document.getElementById('stLinks').textContent=c.length;
+document.getElementById('stClicks').textContent=clicks;
+document.getElementById('stEarn').textContent='$'+earnOf(clicks).toFixed(2);
+document.getElementById('earnBody').innerHTML=codes.map(k=>{const it=L[k];
+return `<tr><td class="mono">${base()}#s=${k}</td><td class="mono">${(it.url||'').slice(0,40)}</td><td>${it.clicks||0}</td><td>$${earnOf(it.clicks||0).toFixed(3)}</td><td><button onclick="delLink('${k}')" style="background:none;border:none;cursor:pointer">${t('cDel')}</button></td></tr>`;}).join('');
+}
+function delLink(k){const L=links();delete L[k];setLinks(L);renderEarn();}
+function loadAds(){const A=CONFIG.ads;
+[['adFoot'],['adGate']].forEach(([id])=>{const el=document.getElementById(id);if(!el)return;const ph=el.querySelector('.ph');
+if(A.client){el.innerHTML='<ins class="adsbygoogle" style="display:block" data-ad-client="'+A.client+'" data-ad-slot="'+(A.slot||'')+'" data-ad-format="auto"></ins>';}
+else if(A.carbonServe){el.innerHTML='';const s=document.createElement('script');s.async=true;s.id='_carbonads_js';s.src='//cdn.carbonads.com/carbon.js?serve='+A.carbonServe+'&placement='+A.carbonPlacement;el.appendChild(s);}});
+if(CONFIG.ads.client&&!document.querySelector('script[src*="adsbygoogle"]')){const s=document.createElement('script');s.async=true;s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+CONFIG.ads.client;s.crossOrigin='anonymous';document.head.appendChild(s);try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}}
+}
+window.addEventListener('hashchange',route);
+setLang('en');loadAds();renderEarn();route();
+</script>
+</body>
+</html>
