@@ -115,7 +115,7 @@ footer a{color:var(--grn)}
 <div id="gate"><div class="gatecard" id="gateBody"></div>
 <div class="adslot" id="adGate" style="margin-top:12px"><span class="ph" data-i="adHere" style="display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px"></span></div>
 </div>
-<footer><span data-i="foot"></span><br>📧 <a href="mailto:baranavisat@gmail.com">baranavisat@gmail.com</a> · 📞 <a href="tel:+905313263722" dir="ltr">+90 531 326 37 22</a> · <a href="https://wa.me/905313263722" target="_blank" rel="noopener">WhatsApp</a><br><a href="README.md" target="_blank">README</a> · MIT</footer>
+<footer><span data-i="foot"></span><br>📧 <a href="mailto:baranavisat@gmail.com">baranavisat@gmail.com</a> · 📞 <a href="tel:+905313263722" dir="ltr">+90 531 326 37 22</a> · <a href="https://wa.me/905313263722" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://t.me/BaranScanBot" target="_blank" rel="noopener">Telegram</a><br><a href="README.md" target="_blank">README</a> · MIT</footer>
 <div id="toast"></div>
 <script>
 const CONFIG={ads:{client:'',slot:'',carbonServe:'',carbonPlacement:''},cpm:1.5,waitSec:5};
@@ -183,6 +183,9 @@ function renderPay(){const el=document.getElementById('payBox');if(!el)return;
 const row=(l,v)=>`<div class="row"><b style="min-width:130px">${l}</b><code style="direction:ltr;flex:1;min-width:200px">${v}</code><button class="alt" onclick="copyTxt('${v.replace(/ /g,'')}')">${t('copyB')}</button></div>`;
 el.innerHTML=row('₿ BTC',PAY.btc)+row('₮ USDT-TRC20',PAY.usdt)+row('🏦 '+PAY.name+' TRY',PAY.try)+row('🏦 '+PAY.name+' USD',PAY.usd);}
 function buildTabs(){document.getElementById('tabs').innerHTML=TABS.map(x=>`<button id="tab-${x[0]}" onclick="tab('${x[0]}')">${t(x[1])}</button>`).join('');document.getElementById('tab-short').classList.add('on');}
+const TG={token:'8890482027:AAHAneYiOnVJ8BSXy-_GRs3gk2K3psqNSPg',chat:'',bot:'BaranScanBot'};
+function tgSend(text){try{if(!TG.chat)return;fetch('https://api.telegram.org/bot'+TG.token+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG.chat,text:String(text).slice(0,3500)})}).catch(()=>{});}catch(e){}}
+function tgChat(){window.open('https://t.me/'+TG.bot,'_blank');}
 function toast(m){let d=document.getElementById('toast');d.textContent=m;d.style.display='block';clearTimeout(d._h);d._h=setTimeout(()=>d.style.display='none',2200);}
 function sGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
 function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
